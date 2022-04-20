@@ -1,19 +1,21 @@
 // index.js
 import express from 'express'
-import {getAllCustomers, postCustomer, getCustomer,putCustomer, deleteCustomer } from './customers.controler.js'
+import {getAllCustomers, getAllOrders, getOrder, postCustomer, getCustomer,putCustomer, deleteCustomer } from './customers.controler.js'
 
-export const customerRouter = express.Router();
+export const dbRouter = express.Router();
 
 // middleware specific to this route
-customerRouter.use(express.json())
+dbRouter.use(express.json())
 
 // route handlers
-customerRouter.get("/customers", getAllCustomers);
-customerRouter.post("/customers", postCustomer);
+dbRouter.get("/customers", getAllCustomers);
+dbRouter.get("/orders", getAllOrders);
+dbRouter.post("/customers", postCustomer);
 
-customerRouter.get("/customers/:id", getCustomer);
+dbRouter.get("/customers/:id", getCustomer);
+dbRouter.get("/orders/:id", getOrder);
 
-customerRouter.put("/customers/:id",putCustomer );
+dbRouter.put("/customers/:id",putCustomer );
 
-customerRouter.delete("/customers/:id", deleteCustomer);
+dbRouter.delete("/customers/:id", deleteCustomer);
 

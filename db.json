@@ -22,10 +22,18 @@
                 1,
                 4
             ]
+        },
+        {
+            "orderId": 1,
+            "customerId": 14,
+            "itemId": [
+                1
+            ]
         }
     ],
     "items": [
         {
+            "itemId": 1,
             "name": "Luka",
             "description": " Lorem ipsum",
             "price": 100,

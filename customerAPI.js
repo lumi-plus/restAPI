@@ -1,6 +1,6 @@
 import express from "express";
 
-import {customerRouter} from "./customers/customer.route.js";
+import {dbRouter} from "./customers/customer.route.js";
 import {quizzesRouter} from "./quizzes/quizzes.route.js";
 const app = express();
 const PORT = 3000;
@@ -9,7 +9,7 @@ const PORT = 3000;
 app.use(express.json());
 
 // paths handled by quizzesRouter
-app.use(customerRouter)
+app.use(dbRouter)
 
 // new addition!
 // paths handled by quizzesRouter
