@@ -11,7 +11,7 @@ export async function getAllCustomers() {
   } catch (err) {
     if (err.code === "ENOENT") {
       // file does not exits
-      await save([]); // create a new file with ampty array
+      await saveCustomers([]); // create a new file with ampty array
       return []; // return empty array
     } // // cannot handle this exception, so rethrow
     else throw err;
@@ -25,7 +25,7 @@ export async function getAllOrders() {
   } catch (err) {
     if (err.code === "ENOENT") {
       // file does not exits
-      await save([]); // create a new file with ampty array
+      await saveCustomers([]); // create a new file with ampty array
       return []; // return empty array
     } // // cannot handle this exception, so rethrow
     else throw err;
@@ -33,9 +33,15 @@ export async function getAllOrders() {
 }
 
 // save array of customers to file
-async function save(customers = []) {
+async function saveCustomers(customers = []) {
   let customersTxt = JSON.stringify(customers);
-  await fs.writeFile(CUSTOMERS_FILE, customersTxt);
+  await fs.writeFile(DB_FILE, customersTxt);
+}
+
+// save array of customers to file
+async function saveOrders(orders = []) {
+  let ordersTxt = JSON.stringify(orders);
+  await fs.writeFile(DB_FILE, ordersTxt);
 }
 
 // test function for customer ID
@@ -52,8 +58,8 @@ function findOrder(orderArray, Id) {
   );
 }
 
-// get gustomer by ID
-export async function getByID(customerId) {
+// get customer by ID
+export async function getCustomerByID(customerId) {
   let customerArray = await getAllCustomers();
   let index = findCustomer(customerArray, customerId);
   if (index === -1)
@@ -71,25 +77,47 @@ export async function getOrderByID(orderId) {
 }
 
 // create a new customer
-export async function add(newCustomer) {
+export async function addCustomer(newCustomer) {
   let customerArray = await getAllCustomers();
   if (findCustomer(customerArray, newCustomer.customerId) !== -1 )
     throw new Error(
       `Customer with Id:${newCustomer.customerId} already exists`
     );
   customerArray.push(newCustomer);
-  await save(customerArray);
+  await saveCustomers(customerArray);
+}
+
+// create a new order for customer
+export async function addOrder(newOrder) {
+  let orderArray = await getAllOrders();
+  if (findOrder(orderArray, newOrder.customerId) !== -1 )
+    throw new Error(
+      `Customer with Id:${newOrder.customerId} already exists`
+    );
+    orderArray.push(newOrder);
+  await saveOrders(orderArray);
 }
 
 // update existing customer
-export async function update(customerId, customer) {
+export async function updateCustomer(customerId, customer) {
   let customerArray = await getAllCustomers();
   let index = findCustomer(customerArray, customerId); // findIndex
   if (index === -1)
     throw new Error(`Customer with ID:${customerId} doesn't exist`);
   else {
     customerArray[index] = customer;
-    await save(customerArray);
+    await saveCustomers(customerArray);
+  }
+}
+// update existing customer order
+export async function updateCustomerOrder(customerId, customer) {
+  let customerArray = await getAllCustomers();
+  let index = findCustomer(customerArray, customerId); // findIndex
+  if (index === -1)
+    throw new Error(`Customer with ID:${customerId} doesn't exist`);
+  else {
+    customerArray[index] = customer;
+    await saveCustomers(customerArray);
   }
 }
 
@@ -101,6 +129,6 @@ export async function remove(customerId) {
     throw new Error(`Customer with ID:${customerId} doesn't exist`);
   else {
     customerArray.splice(index, 1); // remove customer from array
-    await save(customerArray);
+    await saveCustomers(customerArray);
   }
 }

@@ -8,7 +8,7 @@ GET http://localhost:3000/orders HTTP/1.1
 
 ###
 // get all specific order
-GET http://localhost:3000/orders/1 HTTP/1.1
+GET http://localhost:3000/orders/9 HTTP/1.1
 
 ###
 
@@ -17,6 +17,26 @@ POST http://localhost:3000/customers HTTP/1.1
 content-type: application/json
 
 {"customerId":16, "customerName": "Ana Peterson"}
+###
+
+// create customer
+POST http://localhost:3000/customers HTTP/1.1
+content-type: application/json
+
+{"customerId":22, "customerName": "Luka Miga"}
+###
+
+// create new order
+POST http://localhost:3000/customers/17 HTTP/1.1
+content-type: application/json
+
+{
+            "orderId": 9,
+            "customerId": 17,
+            "itemId": [
+                1,7,4
+            ]
+        }
 ###
 
 // get customer by id
