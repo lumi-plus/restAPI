@@ -35,10 +35,11 @@ export async function getAllOrders() {
 // save array of customers to file
 async function saveCustomers(customers = []) {
   let customersTxt = JSON.stringify(customers);
+  let orderArray = await getAllOrders();
   await fs.writeFile(DB_FILE, customersTxt);
 }
 
-// save array of customers to file
+// save array of orders to file
 async function saveOrders(orders = []) {
   let ordersTxt = JSON.stringify(orders);
   await fs.writeFile(DB_FILE, ordersTxt);
@@ -78,13 +79,31 @@ export async function getOrderByID(orderId) {
 
 // create a new customer
 export async function addCustomer(newCustomer) {
+  try{
   let customerArray = await getAllCustomers();
+  let ordersArray = await getAllOrders();
+  let dbTxt = await fs.readFile(DB_FILE);
+  let db = JSON.parse(dbTxt);
+  
   if (findCustomer(customerArray, newCustomer.customerId) !== -1 )
     throw new Error(
       `Customer with Id:${newCustomer.customerId} already exists`
     );
   customerArray.push(newCustomer);
-  await saveCustomers(customerArray);
+  db.customers = customerArray
+  // await saveCustomers(customerArray);
+  console.log(db)
+  dbTxt = JSON.stringify(db);
+  await fs.writeFile(DB_FILE, dbTxt);
+  } 
+catch (err) {
+  if (err.code === "ENOENT") {
+    // file does not exits
+    
+    return []; // return empty array
+  } // // cannot handle this exception, so rethrow
+  else throw err;
+}
 }
 
 // create a new order for customer

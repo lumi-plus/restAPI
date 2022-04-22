@@ -16,7 +16,7 @@ GET http://localhost:3000/orders/9 HTTP/1.1
 POST http://localhost:3000/customers HTTP/1.1
 content-type: application/json
 
-{"customerId":16, "customerName": "Ana Peterson"}
+{"customerId":18, "customerName": "Ana Peterson"}
 ###
 
 // create customer
